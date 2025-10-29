@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dot-color: rgba(255, 255, 255, 0.06);
+  --dot-size: 1px;
+  --dot-space: 24px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Subtle dot grid base, can be reused by the background component */
+.dot-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at center, var(--dot-color) var(--dot-size), transparent var(--dot-size));
+  background-size: var(--dot-space) var(--dot-space);
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0.9), rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
+}
+
+/* Floating dock safe-area helper */
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  padding-left: max(env(safe-area-inset-left), 0.5rem);
+  padding-right: max(env(safe-area-inset-right), 0.5rem);
+}
+
+/* Glass utilities */
+.glass {
+  @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-soft;
+}
+
+.ghost-btn {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-foreground/90 hover:bg-white/5 transition-colors;
+}
+
