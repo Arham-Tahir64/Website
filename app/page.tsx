@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import DotGridBackground from '@/components/DotGridBackground'
 import Dock from '@/components/Dock'
@@ -13,11 +13,42 @@ import ResumeModal from '@/components/ResumeModal'
 
 export default function Page() {
   const [resumeOpen, setResumeOpen] = useState(false)
+  const [activeId, setActiveId] = useState<string>('home')
+  const [progress, setProgress] = useState(0)
 
   const container = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   }
+
+  // observe sections for active state and track scroll progress
+  React.useEffect(() => {
+    const ids = ['home', 'projects', 'experience', 'contact']
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (visible?.target?.id) setActiveId(visible.target.id)
+      },
+      { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    const onScroll = () => {
+      const scrolled = window.scrollY
+      const height = document.body.scrollHeight - window.innerHeight
+      setProgress(height > 0 ? scrolled / height : 0)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
@@ -26,11 +57,11 @@ export default function Page() {
   }
 
   const dockItems = [
-    { icon: <Home size={18} />, label: 'Home', onClick: () => scrollTo('home') },
-    { icon: <FolderGit2 size={18} />, label: 'Projects', onClick: () => scrollTo('projects') },
-    { icon: <BriefcaseBusiness size={18} />, label: 'Experience', onClick: () => scrollTo('experience') },
+    { icon: <Home size={18} />, label: 'Home', onClick: () => scrollTo('home'), className: activeId === 'home' ? 'active' : '' },
+    { icon: <FolderGit2 size={18} />, label: 'Projects', onClick: () => scrollTo('projects'), className: activeId === 'projects' ? 'active' : '' },
+    { icon: <BriefcaseBusiness size={18} />, label: 'Experience', onClick: () => scrollTo('experience'), className: activeId === 'experience' ? 'active' : '' },
     { icon: <FileText size={18} />, label: 'Resume', onClick: () => setResumeOpen(true) },
-    { icon: <Mail size={18} />, label: 'Contact', onClick: () => scrollTo('contact') },
+    { icon: <Mail size={18} />, label: 'Contact', onClick: () => scrollTo('contact'), className: activeId === 'contact' ? 'active' : '' },
   ]
 
   return (
@@ -40,7 +71,7 @@ export default function Page() {
       <div className="mx-auto max-w-screen-xl px-4 pt-20 pb-32 sm:pt-24">
         {/* HERO */}
         <section id="home" className="mb-24">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="group grid grid-cols-1 gap-6 md:grid-cols-2">
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={container}>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Arham Tahir</h1>
               <p className="mt-3 text-lg text-foreground/85">AI Engineer / Full-Stack Developer / Builder</p>
@@ -152,6 +183,9 @@ export default function Page() {
       </div>
 
       <Dock items={dockItems} />
+      <div className="scroll-rail">
+        <div className="scroll-rail__fill" style={{ height: `${Math.round(progress * 100)}%` }} />
+      </div>
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>
   )
