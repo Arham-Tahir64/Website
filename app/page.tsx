@@ -130,7 +130,7 @@ export default function Page() {
             />
             <ProjectCard
               title="Chitty"
-              description="Realtime chat with multi-user rooms and persistent history; REST + WebSocket endpoints supporting 1,000+ concurrent users with 25–30ms p99."
+              description="Realtime chat with multi-user rooms and persistent history; REST + WebSocket endpoints supporting 1,000+ concurrent users with 25–30ms latency."
               stack={["React", "TypeScript", "Node.js", "WebSockets", "PostgreSQL", "Redis"]}
               meta={["1,000+ concurrent", "25–30ms p99", "Artillery load tests"]}
             />
@@ -185,9 +185,15 @@ export default function Page() {
         <section id="contact" className="mb-28">
           <SectionHeader title="Let's talk" caption="I'm open to software internships, AI/ML roles, and high-impact builder roles." />
           <div className="flex flex-wrap gap-3">
-            <a className="ghost-btn" href="mailto:hello@example.com">Email</a>
-            <a className="ghost-btn" href="#" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a className="ghost-btn" href="#" target="_blank" rel="noreferrer">GitHub</a>
+            <a className="ghost-btn" href="mailto:arhamt13@gmail.com">
+              Email
+            </a>
+            <a className="ghost-btn" href="https://www.linkedin.com/in/arham-tahir-5735b7270/" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a className="ghost-btn" href="https://github.com/Arham-Tahir64" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
           </div>
         </section>
 
