@@ -142,6 +142,16 @@ export default function Page() {
           <SectionHeader title="Experience" caption="Where I've built real things." />
           <div className="grid grid-cols-1 gap-5">
             <ExperienceCard
+              company="WayBionic Club"
+              role="Software Team Member"
+              bullets={[
+                "Building control software for a bionic arm enabling precise remote surgery.",
+                "Focused on reliability, teleoperation latency, and safety for space and terrestrial use.",
+                "Collaborating across hardware and software teams to integrate, test, and iterate quickly.",
+              ]}
+              badge="Robotics / MedTech"
+            />
+            <ExperienceCard
               company="Tech Start — FlowBuildr"
               role="AI Engineer"
               bullets={[
