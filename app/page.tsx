@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import DotGridBackground from '@/components/DotGridBackground'
 import Dock from '@/components/Dock'
+import { Home, FolderGit2, BriefcaseBusiness, FileText, Mail } from 'lucide-react'
 import GlassCard from '@/components/GlassCard'
 import SectionHeader from '@/components/SectionHeader'
 import ProjectCard from '@/components/ProjectCard'
@@ -17,6 +18,20 @@ export default function Page() {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   }
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const dockItems = [
+    { icon: <Home size={18} />, label: 'Home', onClick: () => scrollTo('home') },
+    { icon: <FolderGit2 size={18} />, label: 'Projects', onClick: () => scrollTo('projects') },
+    { icon: <BriefcaseBusiness size={18} />, label: 'Experience', onClick: () => scrollTo('experience') },
+    { icon: <FileText size={18} />, label: 'Resume', onClick: () => setResumeOpen(true) },
+    { icon: <Mail size={18} />, label: 'Contact', onClick: () => scrollTo('contact') },
+  ]
 
   return (
     <main className="relative">
@@ -102,12 +117,6 @@ export default function Page() {
           <SectionHeader title="Experience" caption="Where I've built real things." />
           <div className="grid grid-cols-1 gap-5">
             <ExperienceCard
-              company="Suncor"
-              role="FP&A Co-op"
-              bullets={["Built internal tooling to support financial planning and analysis."]}
-              badge="Finance/Systems"
-            />
-            <ExperienceCard
               company="Tech Start UCalgary — FlowBuildr"
               role="AI Engineer"
               bullets={[
@@ -142,7 +151,7 @@ export default function Page() {
         </footer>
       </div>
 
-      <Dock onOpenResume={() => setResumeOpen(true)} />
+      <Dock items={dockItems} />
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>
   )
