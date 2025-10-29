@@ -123,22 +123,16 @@ export default function Page() {
           <SectionHeader title="Projects" caption="Things I actually ship." />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <ProjectCard
-              title="FlowBuildr"
-              description="AI-assisted construction takeoff that extracts materials from floorplans and generates cost estimates."
-              stack={["Python", "YOLOv8", "Supabase", "AWS"]}
-              meta={["computer vision", "batch + streaming"]}
+              title="AI Game Control Assistant"
+              description="Real-time computer vision assistant detecting in-game events with 92% accuracy using a custom-trained YOLOv8 model; pipelines for validation and dynamic system output at 30+ FPS."
+              stack={["Python", "YOLOv8", "OpenCV", "Docker"]}
+              meta={["92% accuracy", "30+ FPS", "LLM decision hooks"]}
             />
             <ProjectCard
               title="Chitty"
-              description="Low-latency real-time chat platform battle-tested with 1,000+ concurrent users and <30ms p99."
-              stack={["Node.js", "WebSockets", "Redis", "Postgres"]}
-              meta={["realtime <30ms p99", "horizontal scaling"]}
-            />
-            <ProjectCard
-              title="Bounty.Fun"
-              description="Decentralized bounty board on Solana for AI and open-source work. Wallet auth, IPFS storage, escrowed payouts."
-              stack={["React", "Rust (Solana)", "Tailwind"]}
-              meta={["Solana", "IPFS"]}
+              description="Realtime chat with multi-user rooms and persistent history; REST + WebSocket endpoints supporting 1,000+ concurrent users with 25–30ms p99."
+              stack={["React", "TypeScript", "Node.js", "WebSockets", "PostgreSQL", "Redis"]}
+              meta={["1,000+ concurrent", "25–30ms p99", "Artillery load tests"]}
             />
           </div>
         </section>
@@ -148,20 +142,31 @@ export default function Page() {
           <SectionHeader title="Experience" caption="Where I've built real things." />
           <div className="grid grid-cols-1 gap-5">
             <ExperienceCard
-              company="Tech Start UCalgary — FlowBuildr"
+              company="Tech Start — FlowBuildr"
               role="AI Engineer"
               bullets={[
-                "Built computer vision tooling to automatically extract construction materials and quantities from PDF floorplans.",
+                "Developed AI-powered takeoff tool using CV to extract materials/quantities from PDF floorplans.",
+                "Implemented image preprocessing and scale inference pipelines; integrated Supabase for uploads/auth/reporting.",
               ]}
               badge="AI / CV"
             />
             <ExperienceCard
-              company="WayBionic"
-              role="Software Team Member"
+              company="Data Science & Machine Learning Club"
+              role="Backend Engineer"
               bullets={[
-                "Helped develop assistive control software for a remote surgery robotic arm designed for extreme/remote environments (including space medicine use cases).",
+                "Designed PostgreSQL schemas and built REST APIs with C#/.NET for marketplace data.",
+                "Optimized queries and indexing; deployed on AWS EC2/S3 for scalable API hosting.",
               ]}
               badge="Infra"
+            />
+            <ExperienceCard
+              company="FIRST Tech Challenge (FTC)"
+              role="Robotics Team Member"
+              bullets={[
+                "Engineered TensorFlow-powered CV ring detection; improved autonomous picking efficiency by ~20%.",
+                "Contributed to Java control systems; reduced component mass 15% via SolidWorks design iterations.",
+              ]}
+              badge="AI / CV"
             />
           </div>
         </section>
