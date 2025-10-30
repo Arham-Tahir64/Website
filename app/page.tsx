@@ -13,40 +13,39 @@ import ResumeModal from '@/components/ResumeModal'
 
 export default function Page() {
   const [resumeOpen, setResumeOpen] = useState(false)
-  const [activeId, setActiveId] = useState<string>('home')
-  const [progress, setProgress] = useState(0)
+  const [currentSection, setCurrentSection] = useState('home')
+  const [scrollProgress, setScrollProgress] = useState(0)
 
-  const container = {
-    hidden: { opacity: 0, y: 10 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  const fadeIn = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
   }
 
-  // observe sections for active state and track scroll progress
   React.useEffect(() => {
-    const ids = ['home', 'projects', 'experience', 'contact']
+    const sections = ['home', 'projects', 'experience', 'contact']
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible?.target?.id) setActiveId(visible.target.id)
+        if (visible?.target?.id) setCurrentSection(visible.target.id)
       },
       { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
     )
-    ids.forEach((id) => {
+    sections.forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
-    const onScroll = () => {
+    const handleScroll = () => {
       const scrolled = window.scrollY
-      const height = document.body.scrollHeight - window.innerHeight
-      setProgress(height > 0 ? scrolled / height : 0)
+      const maxScroll = document.body.scrollHeight - window.innerHeight
+      setScrollProgress(maxScroll > 0 ? scrolled / maxScroll : 0)
     }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     return () => {
       observer.disconnect()
-      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
@@ -57,11 +56,11 @@ export default function Page() {
   }
 
   const dockItems = [
-    { icon: <Home size={18} />, label: 'Home', onClick: () => scrollTo('home'), className: activeId === 'home' ? 'active' : '' },
-    { icon: <FolderGit2 size={18} />, label: 'Projects', onClick: () => scrollTo('projects'), className: activeId === 'projects' ? 'active' : '' },
-    { icon: <BriefcaseBusiness size={18} />, label: 'Experience', onClick: () => scrollTo('experience'), className: activeId === 'experience' ? 'active' : '' },
+    { icon: <Home size={18} />, label: 'Home', onClick: () => scrollTo('home'), className: currentSection === 'home' ? 'active' : '' },
+    { icon: <FolderGit2 size={18} />, label: 'Projects', onClick: () => scrollTo('projects'), className: currentSection === 'projects' ? 'active' : '' },
+    { icon: <BriefcaseBusiness size={18} />, label: 'Experience', onClick: () => scrollTo('experience'), className: currentSection === 'experience' ? 'active' : '' },
     { icon: <FileText size={18} />, label: 'Resume', onClick: () => setResumeOpen(true) },
-    { icon: <Mail size={18} />, label: 'Contact', onClick: () => scrollTo('contact'), className: activeId === 'contact' ? 'active' : '' },
+    { icon: <Mail size={18} />, label: 'Contact', onClick: () => scrollTo('contact'), className: currentSection === 'contact' ? 'active' : '' },
   ]
 
   return (
@@ -72,7 +71,7 @@ export default function Page() {
         {/* HERO */}
         <section id="home" className="mb-24">
           <div className="group grid grid-cols-1 gap-6 md:grid-cols-2">
-            <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={container}>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={fadeIn}>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Arham Tahir</h1>
               <p className="mt-3 text-lg text-foreground/85">AI Engineer / Full-Stack Developer / Builder</p>
               <p className="mt-4 max-w-[60ch] text-foreground/80">
@@ -85,32 +84,32 @@ export default function Page() {
                   'Chitty — 1,000+ concurrent chat',
                   'Bounty.Fun — on-chain bounties',
                 ].map((b) => (
-                  <span key={b} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-foreground/80">
+                  <span key={b} className="rounded-md border border-white/8 bg-white/[0.03] px-3 py-1 text-xs text-foreground/75 font-medium">
                     {b}
                   </span>
                 ))}
               </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="#projects" className="ghost-btn bg-white/5">View Projects</a>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <a href="#projects" className="ghost-btn bg-white/[0.04] hover:bg-white/8">View Projects</a>
                 <button className="ghost-btn" onClick={() => setResumeOpen(true)}>Download Resume</button>
               </div>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={container}>
-              <GlassCard className="p-5">
-                <div className="mb-2 text-sm text-muted">Profile snapshot</div>
-                <div className="grid grid-cols-1 gap-3 text-sm">
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={fadeIn}>
+              <GlassCard className="p-6">
+                <div className="mb-3 text-xs text-muted uppercase tracking-wider">Profile</div>
+                <div className="grid grid-cols-1 gap-4 text-sm">
                   <div>
-                    <div className="text-muted">Location</div>
-                    <div>Calgary, AB</div>
+                    <div className="text-muted text-xs mb-1">Location</div>
+                    <div className="text-foreground/90">Calgary, AB</div>
                   </div>
                   <div>
-                    <div className="text-muted">Focus</div>
-                    <div>AI tooling, low-latency infra, human-in-the-loop systems</div>
+                    <div className="text-muted text-xs mb-1">Focus</div>
+                    <div className="text-foreground/85 leading-relaxed">AI tooling, low-latency infra, human-in-the-loop systems</div>
                   </div>
                   <div>
-                    <div className="text-muted">Stack</div>
-                    <div>TypeScript / React / Rust / Postgres / AWS</div>
+                    <div className="text-muted text-xs mb-1">Stack</div>
+                    <div className="text-foreground/85">TypeScript / React / Rust / Postgres / AWS</div>
                   </div>
                 </div>
               </GlassCard>
@@ -205,7 +204,7 @@ export default function Page() {
 
       <Dock items={dockItems} />
       <div className="scroll-rail">
-        <div className="scroll-rail__fill" style={{ height: `${Math.round(progress * 100)}%` }} />
+        <div className="scroll-rail__fill" style={{ height: `${Math.round(scrollProgress * 100)}%` }} />
       </div>
       <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </main>

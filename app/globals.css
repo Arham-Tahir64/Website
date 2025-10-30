@@ -34,6 +34,9 @@ html {
   pointer-events: none;
 }
 
+/* spotlight that follows cursor */
+/* removed RB canvas grid */
+
 /* Floating dock safe-area helper */
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
@@ -43,11 +46,20 @@ html {
 
 /* Glass utilities */
 .glass {
-  @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-soft;
+  @apply rounded-xl border backdrop-blur-sm;
+  border-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .ghost-btn {
-  @apply inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-foreground/90 hover:bg-white/5 transition-colors;
+  @apply inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-all;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(230, 231, 233, 0.9);
+  transition-duration: 150ms;
+}
+.ghost-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Dock styles (moved from components/Dock.css) */
@@ -73,13 +85,13 @@ html {
   display: flex;
   align-items: flex-end;
   width: fit-content;
-  gap: 1rem;
-  border-radius: 1rem;
-  background-color: rgba(6, 0, 16, 0.6);
-  border: 1px solid rgba(255,255,255,0.12);
+  gap: 0.75rem;
+  border-radius: 0.875rem;
+  background-color: rgba(6, 0, 16, 0.65);
+  border: 1px solid rgba(255,255,255,0.1);
   padding: 0 0.5rem 0.5rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
 .dock-item {
@@ -87,16 +99,17 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background-color: rgba(6, 0, 16, 0.6);
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  background-color: rgba(6, 0, 16, 0.5);
+  border: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
   outline: none;
-  transition: box-shadow 200ms ease;
+  transition: all 150ms ease;
 }
 
 .dock-item:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.14);
 }
 
 .dock-icon { display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); }
@@ -114,5 +127,41 @@ html {
   font-size: 0.75rem;
   color: #fff;
   transform: translateX(-50%);
+}
+
+/* active dock item */
+.dock-item.active {
+  box-shadow: 0 6px 20px rgba(0, 153, 255, 0.3), inset 0 1px 0 rgba(125,211,252,0.2);
+  border-color: rgba(125,211,252,0.2);
+}
+.dock-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  width: 12px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: rgba(125,211,252,0.85);
+}
+
+/* right scroll progress rail */
+.scroll-rail {
+  position: fixed;
+  top: 0;
+  right: 12px;
+  width: 1.5px;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+  pointer-events: none;
+  z-index: 40;
+}
+.scroll-rail__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(to bottom, rgba(125,211,252,0.8), rgba(125,211,252,0.25));
+  transition: height 0.1s ease-out;
 }
 

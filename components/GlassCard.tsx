@@ -5,13 +5,16 @@ type GlassCardProps = {
   children: ReactNode
 }
 
-export function GlassCard({ className = '', children }: GlassCardProps) {
+export function GlassCard({ className, children }: GlassCardProps) {
   return (
-    <div className={`glass ${className}`}>
+    <div className={className ? `glass ${className}` : 'glass'}>
       {children}
     </div>
   )
 }
 
 export default GlassCard
+
+
+
 

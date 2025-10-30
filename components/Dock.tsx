@@ -40,7 +40,7 @@ type DockItemProps = {
   magnification: number
 }
 
-function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize }: DockItemProps) {
+function DockItem({ children, className, onClick, mouseX, spring, distance, magnification, baseItemSize }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null)
   const isHovered = useMotionValue(0)
 
@@ -61,7 +61,7 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
-      className={`dock-item ${className}`}
+      className={className ? `dock-item ${className}` : 'dock-item'}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
@@ -76,7 +76,7 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
 }
 
 type DockLabelProps = { className?: string; children: React.ReactNode; isHovered?: MotionValue<number> }
-function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
+function DockLabel({ children, className, isHovered }: DockLabelProps) {
   const [isVisible, setIsVisible] = useState(false)
   useEffect(() => {
     if (!isHovered) return
@@ -86,7 +86,7 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -10 }} exit={{ opacity: 0, y: 0 }} transition={{ duration: 0.2 }} className={`dock-label ${className}`} role="tooltip" style={{ x: '-50%' }}>
+        <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -10 }} exit={{ opacity: 0, y: 0 }} transition={{ duration: 0.2 }} className={className ? `dock-label ${className}` : 'dock-label'} role="tooltip" style={{ x: '-50%' }}>
           {children}
         </motion.div>
       )}
@@ -94,8 +94,8 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
   )
 }
 
-function DockIcon({ children, className = '' }: { className?: string; children: React.ReactNode }) {
-  return <div className={`dock-icon ${className}`}>{children}</div>
+function DockIcon({ children, className }: { className?: string; children: React.ReactNode }) {
+  return <div className={className ? `dock-icon ${className}` : 'dock-icon'}>{children}</div>
 }
 
 export default function Dock({

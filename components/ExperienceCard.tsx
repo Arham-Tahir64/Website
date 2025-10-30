@@ -13,18 +13,18 @@ type ExperienceCardProps = {
 
 export default function ExperienceCard({ company, role, dates, bullets, badge }: ExperienceCardProps) {
   return (
-    <motion.div whileHover={{ y: -3 }}>
-      <GlassCard className="p-5 transition-shadow hover:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.4)]">
-        <div className="flex items-start justify-between gap-4">
+    <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+      <GlassCard className="p-6 hover:border-white/12">
+        <div className="flex items-start justify-between gap-4 mb-3">
           <div>
-            <h3 className="text-lg font-medium">{company}</h3>
-            <p className="mt-1 text-sm text-foreground/80">{role}{dates ? ` • ${dates}` : ''}</p>
+            <h3 className="text-lg font-semibold">{company}</h3>
+            <p className="mt-0.5 text-sm text-foreground/75">{role}{dates && ` • ${dates}`}</p>
           </div>
-          {badge ? (
-            <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-foreground/80">{badge}</span>
-          ) : null}
+          {badge && (
+            <span className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-foreground/75 font-medium">{badge}</span>
+          )}
         </div>
-        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-foreground/85">
+        <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground/80 leading-relaxed">
           {bullets.map((b, i) => (
             <li key={i}>{b}</li>
           ))}
@@ -33,5 +33,8 @@ export default function ExperienceCard({ company, role, dates, bullets, badge }:
     </motion.div>
   )
 }
+
+
+
 
 

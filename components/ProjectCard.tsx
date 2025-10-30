@@ -11,32 +11,30 @@ type ProjectCardProps = {
   href?: string
 }
 
-export default function ProjectCard({ title, description, stack, meta = [], href = '#' }: ProjectCardProps) {
+export default function ProjectCard({ title, description, stack, meta, href = '#' }: ProjectCardProps) {
   return (
-    <motion.div whileHover={{ y: -3 }}>
-      <GlassCard className="p-5 transition-shadow hover:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.4)]">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-medium">{title}</h3>
-            <p className="mt-1 text-sm text-foreground/80">{description}</p>
-          </div>
+    <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+      <GlassCard className="p-6 hover:border-white/12">
+        <div className="mb-3">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="mt-1.5 text-sm text-foreground/75 leading-relaxed">{description}</p>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-1.5">
           {stack.map((s) => (
-            <span key={s} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-foreground/80">
+            <span key={s} className="rounded-md border border-white/8 bg-white/[0.03] px-2.5 py-1 text-xs text-foreground/75 font-medium">
               {s}
             </span>
           ))}
         </div>
-        {meta.length ? (
-          <div className="mt-4 flex flex-wrap gap-3 text-xs text-muted">
+        {meta && meta.length > 0 && (
+          <div className="mt-3.5 flex flex-wrap gap-2.5 text-xs text-muted">
             {meta.map((m) => (
-              <span key={m} className="opacity-80">{m}</span>
+              <span key={m} className="opacity-75">{m}</span>
             ))}
           </div>
-        ) : null}
+        )}
         <div className="mt-4">
-          <a href={href} className="text-sm text-accent hover:underline">Learn more →</a>
+          <a href={href} className="text-sm text-accent hover:text-accent/80 inline-flex items-center gap-1 transition-colors">Learn more <span>→</span></a>
         </div>
       </GlassCard>
     </motion.div>

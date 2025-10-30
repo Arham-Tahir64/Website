@@ -20,7 +20,6 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
     if (open) {
       lastFocused.current = document.activeElement as HTMLElement
       document.addEventListener('keydown', handleKey)
-      // Move focus to first focusable
       const focusable = getFocusable()
       focusable[0]?.focus()
       document.body.style.overflow = 'hidden'
@@ -33,10 +32,9 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   }, [open])
 
   const getFocusable = () => {
-    const el = panelRef.current
-    if (!el) return [] as HTMLElement[]
+    if (!panelRef.current) return []
     return Array.from(
-      el.querySelectorAll<HTMLElement>(
+      panelRef.current.querySelectorAll<HTMLElement>(
         'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
       )
     ).filter((n) => !n.hasAttribute('disabled'))
@@ -99,5 +97,8 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
     </AnimatePresence>
   )
 }
+
+
+
 
 
